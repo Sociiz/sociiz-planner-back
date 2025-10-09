@@ -3,10 +3,10 @@ import { UserService } from "../services/UserServices";
 
 export class AuthController {
   static async register(request: FastifyRequest, reply: FastifyReply) {
-    const { email, password } = request.body as any;
+    const { email, password, username } = request.body as any;
 
     try {
-      const user = await UserService.createUser({ email, password });
+      const user = await UserService.createUser({ email, password, username });
       const token = (request.server as any).jwt.sign({ id: user._id });
       return reply.send({ token });
     } catch (err: any) {

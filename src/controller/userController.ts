@@ -8,9 +8,9 @@ export class UserController {
   }
 
   static async create(request: FastifyRequest, reply: FastifyReply) {
-    const { email, password } = request.body as any;
+    const { email, password, username } = request.body as any;
     try {
-      const user = await UserService.createUser({ email, password });
+      const user = await UserService.createUser({ email, password, username });
       return reply.status(201).send(user);
     } catch (err: any) {
       return reply.status(400).send({ message: err.message });

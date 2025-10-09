@@ -2,7 +2,11 @@ import { User, IUser } from "../models/UserModel";
 import bcrypt from "bcryptjs";
 
 export class UserService {
-  static async createUser(data: { email: string; password: string }) {
+  static async createUser(data: {
+    email: string;
+    password: string;
+    username: string;
+  }) {
     const exists = await User.findOne({ email: data.email });
     if (exists) throw new Error("Email já existe");
 

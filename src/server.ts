@@ -6,10 +6,11 @@ import { connectDB } from "./config/database";
 import jwtPlugin from "./plugins/jwt";
 import authRoutes from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoute";
+import { taskRoutes } from "./routes/TaskRoutes";
 
 dotenv.config();
 
-const fastify = Fastify({ logger: false });
+const fastify = Fastify({ logger: true });
 
 fastify.register(jwtPlugin);
 fastify.register(cors, {
@@ -25,6 +26,7 @@ fastify.get("/", async () => {
 // Rotas
 fastify.register(authRoutes, { prefix: "/" });
 fastify.register(userRoutes, { prefix: "/" });
+fastify.register(taskRoutes, { prefix: "/" });
 
 const start = async () => {
   try {

@@ -7,6 +7,7 @@ import jwtPlugin from "./plugins/jwt";
 import authRoutes from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoute";
 import { taskRoutes } from "./routes/TaskRoutes";
+import { clientRoutes } from "./routes/ClientRoutes";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ fastify.get("/", async () => {
 fastify.register(authRoutes, { prefix: "/" });
 fastify.register(userRoutes, { prefix: "/" });
 fastify.register(taskRoutes, { prefix: "/" });
+fastify.register(clientRoutes, { prefix: "/" });
 
 const start = async () => {
   try {

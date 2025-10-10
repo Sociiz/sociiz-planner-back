@@ -7,7 +7,7 @@ export class TaskService {
   }
 
   static async getTaskById(id: string) {
-    return Task.findById(id);
+    return Task.findById(id).populate("client", "name");
   }
 
   static async updateTask(id: string, data: Partial<ITask>) {
@@ -20,7 +20,7 @@ export class TaskService {
 
   static async listTasksByStatus(status?: string) {
     const filter = status ? { status } : {};
-    return Task.find(filter);
+    return Task.find(filter).populate("client", "name");
   }
 
   static async addSubtask(taskId: string, subtask: ISubtask) {

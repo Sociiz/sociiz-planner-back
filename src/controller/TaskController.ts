@@ -1,5 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { TaskService } from "../services/TaskService";
+import { Client } from "../models/ClientModel";
+import { Project } from "../models/ProjectModel";
+import { Product } from "../models/ProductModel";
+import { Types } from "mongoose";
 
 export class TaskController {
   static async getAll(request: FastifyRequest, reply: FastifyReply) {
@@ -19,11 +23,13 @@ export class TaskController {
   static async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const userId = (request.user as any)?.id || "teste";
-      const {
+      let {
         title,
         description,
         status,
         client,
+        // project,
+        // product,
         evaluationStatus,
         assignedTo,
         tags,
@@ -31,16 +37,44 @@ export class TaskController {
         dueDate,
       } = request.body as any;
 
+      // Filtra subtasks válidas
       const validSubtasks =
         Array.isArray(subtasks) && subtasks.length > 0
           ? subtasks.filter((s) => s.title && s.title.trim() !== "")
           : [];
 
+      // CLIENTE
+      let clientId;
+      if (client) {
+        let clientDoc = await Client.findOne({ name: client });
+        if (!clientDoc) clientDoc = await Client.create({ name: client });
+        clientId = clientDoc._id as Types.ObjectId;
+      }
+
+      // // PROJETO
+      // let projectId;
+      // if (project) {
+      //   let projectDoc = await Project.findOne({ name: project });
+      //   if (!projectDoc) projectDoc = await Project.create({ name: project });
+      //   projectId = projectDoc._id;
+      // }
+
+      // // PRODUTO
+      // let productId;
+      // if (product) {
+      //   let productDoc = await Product.findOne({ name: product });
+      //   if (!productDoc) productDoc = await Product.create({ name: product });
+      //   productId = productDoc._id;
+      // }
+
+      // Cria task
       const task = await TaskService.createTask({
         title,
         description,
         status,
-        client: client || [],
+        client: clientId,
+        // project: projectId,
+        // product: productId,
         evaluationStatus,
         createdBy: userId,
         assignedTo: assignedTo || [],
@@ -59,11 +93,13 @@ export class TaskController {
   static async update(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = request.params as any;
-      const {
+      let {
         title,
         description,
         status,
         client,
+        // project,
+        // product,
         evaluationStatus,
         assignedTo,
         tags,
@@ -76,11 +112,37 @@ export class TaskController {
           ? subtasks.filter((s) => s.title && s.title.trim() !== "")
           : [];
 
+      // CLIENTE
+      let clientId;
+      if (client) {
+        let clientDoc = await Client.findOne({ name: client });
+        if (!clientDoc) clientDoc = await Client.create({ name: client });
+        clientId = clientDoc._id as Types.ObjectId;
+      }
+
+      // // PROJETO
+      // let projectId;
+      // if (project) {
+      //   let projectDoc = await Project.findOne({ name: project });
+      //   if (!projectDoc) projectDoc = await Project.create({ name: project });
+      //   projectId = projectDoc._id;
+      // }
+
+      // // PRODUTO
+      // let productId;
+      // if (product) {
+      //   let productDoc = await Product.findOne({ name: product });
+      //   if (!productDoc) productDoc = await Product.create({ name: product });
+      //   productId = productDoc._id;
+      // }
+
       const task = await TaskService.updateTask(id, {
         title,
         description,
         status,
-        client,
+        client: clientId,
+        // project: projectId,
+        // product: productId,
         evaluationStatus,
         assignedTo,
         tags,

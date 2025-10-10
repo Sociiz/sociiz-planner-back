@@ -9,7 +9,8 @@ export class TaskService {
   static async getTaskById(id: string) {
     return Task.findById(id)
       .populate("client", "name")
-      .populate("project", "name");
+      .populate("project", "name")
+      .populate("product", "name");
   }
 
   static async updateTask(id: string, data: Partial<ITask>) {

@@ -7,7 +7,7 @@ export class ProjectController {
       const client = await ProjectService.createProject(req.body as any);
       reply.code(201).send(client);
     } catch (error) {
-      reply.code(500).send({ message: "Erro ao criar cliente", error });
+      reply.code(500).send({ message: "Erro ao criar projeto", error });
     }
   }
 
@@ -16,7 +16,7 @@ export class ProjectController {
       const clients = await ProjectService.getAllProjects();
       reply.send(clients);
     } catch (error) {
-      reply.code(500).send({ message: "Erro ao listar clientes", error });
+      reply.code(500).send({ message: "Erro ao listar projetos", error });
     }
   }
 
@@ -25,10 +25,10 @@ export class ProjectController {
       const { id } = req.params as { id: string };
       const client = await ProjectService.getProjectById(id);
       if (!client)
-        return reply.code(404).send({ message: "Cliente não encontrado" });
+        return reply.code(404).send({ message: "projeto não encontrado" });
       reply.send(client);
     } catch (error) {
-      reply.code(500).send({ message: "Erro ao buscar cliente", error });
+      reply.code(500).send({ message: "Erro ao buscar projeto", error });
     }
   }
 
@@ -37,10 +37,10 @@ export class ProjectController {
       const { id } = req.params as { id: string };
       const updated = await ProjectService.updateProject(id, req.body as any);
       if (!updated)
-        return reply.code(404).send({ message: "Cliente não encontrado" });
+        return reply.code(404).send({ message: "projeto não encontrado" });
       reply.send(updated);
     } catch (error) {
-      reply.code(500).send({ message: "Erro ao atualizar cliente", error });
+      reply.code(500).send({ message: "Erro ao atualizar projeto", error });
     }
   }
 
@@ -49,10 +49,10 @@ export class ProjectController {
       const { id } = req.params as { id: string };
       const deleted = await ProjectService.deleteProject(id);
       if (!deleted)
-        return reply.code(404).send({ message: "Cliente não encontrado" });
-      reply.send({ message: "Cliente removido com sucesso" });
+        return reply.code(404).send({ message: "projeto não encontrado" });
+      reply.send({ message: "projeto removido com sucesso" });
     } catch (error) {
-      reply.code(500).send({ message: "Erro ao deletar cliente", error });
+      reply.code(500).send({ message: "Erro ao deletar projeto", error });
     }
   }
 }

@@ -29,7 +29,7 @@ export class TaskController {
         status,
         client,
         project,
-        // product,
+        product,
         evaluationStatus,
         assignedTo,
         tags,
@@ -59,13 +59,13 @@ export class TaskController {
         projectId = projectDoc._id as Types.ObjectId;
       }
 
-      // // PRODUTO
-      // let productId;
-      // if (product) {
-      //   let productDoc = await Product.findOne({ name: product });
-      //   if (!productDoc) productDoc = await Product.create({ name: product });
-      //   productId = productDoc._id;
-      // }
+      // PRODUTO
+      let productId;
+      if (product) {
+        let productDoc = await Product.findOne({ name: product });
+        if (!productDoc) productDoc = await Product.create({ name: product });
+        productId = productDoc._id as Types.ObjectId;
+      }
 
       // Cria task
       const task = await TaskService.createTask({
@@ -74,7 +74,7 @@ export class TaskController {
         status,
         client: clientId,
         project: projectId,
-        // product: productId,
+        product: productId,
         evaluationStatus,
         createdBy: userId,
         assignedTo: assignedTo || [],
@@ -99,7 +99,7 @@ export class TaskController {
         status,
         client,
         project,
-        // product,
+        product,
         evaluationStatus,
         assignedTo,
         tags,
@@ -128,13 +128,13 @@ export class TaskController {
         projectId = projectDoc._id as Types.ObjectId;
       }
 
-      // // PRODUTO
-      // let productId;
-      // if (product) {
-      //   let productDoc = await Product.findOne({ name: product });
-      //   if (!productDoc) productDoc = await Product.create({ name: product });
-      //   productId = productDoc._id;
-      // }
+      // PRODUTO
+      let productId;
+      if (product) {
+        let productDoc = await Product.findOne({ name: product });
+        if (!productDoc) productDoc = await Product.create({ name: product });
+        productId = productDoc._id as Types.ObjectId;
+      }
 
       const task = await TaskService.updateTask(id, {
         title,
@@ -142,7 +142,7 @@ export class TaskController {
         status,
         client: clientId,
         project: projectId,
-        // product: productId,
+        product: productId,
         evaluationStatus,
         assignedTo,
         tags,

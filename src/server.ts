@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes";
 import { userRoutes } from "./routes/userRoute";
 import { taskRoutes } from "./routes/TaskRoutes";
 import { clientRoutes } from "./routes/ClientRoutes";
+import { projectRoutes } from "./routes/ProjectRoutes";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ fastify.register(authRoutes, { prefix: "/" });
 fastify.register(userRoutes, { prefix: "/" });
 fastify.register(taskRoutes, { prefix: "/" });
 fastify.register(clientRoutes, { prefix: "/" });
+fastify.register(projectRoutes, { prefix: "/" });
 
 const start = async () => {
   try {

@@ -28,7 +28,7 @@ export class TaskController {
         description,
         status,
         client,
-        // project,
+        project,
         // product,
         evaluationStatus,
         assignedTo,
@@ -43,7 +43,8 @@ export class TaskController {
           ? subtasks.filter((s) => s.title && s.title.trim() !== "")
           : [];
 
-      // CLIENTE
+      // Ao criar uma task quando informa cliente
+      // verifica se cliente existe na coleção de Cliente, se não Cria
       let clientId;
       if (client) {
         let clientDoc = await Client.findOne({ name: client });
@@ -51,13 +52,12 @@ export class TaskController {
         clientId = clientDoc._id as Types.ObjectId;
       }
 
-      // // PROJETO
-      // let projectId;
-      // if (project) {
-      //   let projectDoc = await Project.findOne({ name: project });
-      //   if (!projectDoc) projectDoc = await Project.create({ name: project });
-      //   projectId = projectDoc._id;
-      // }
+      let projectId;
+      if (project) {
+        let projectDoc = await Project.findOne({ name: project });
+        if (!projectDoc) projectDoc = await Project.create({ name: project });
+        projectId = projectDoc._id as Types.ObjectId;
+      }
 
       // // PRODUTO
       // let productId;
@@ -73,7 +73,7 @@ export class TaskController {
         description,
         status,
         client: clientId,
-        // project: projectId,
+        project: projectId,
         // product: productId,
         evaluationStatus,
         createdBy: userId,
@@ -98,7 +98,7 @@ export class TaskController {
         description,
         status,
         client,
-        // project,
+        project,
         // product,
         evaluationStatus,
         assignedTo,
@@ -120,13 +120,13 @@ export class TaskController {
         clientId = clientDoc._id as Types.ObjectId;
       }
 
-      // // PROJETO
-      // let projectId;
-      // if (project) {
-      //   let projectDoc = await Project.findOne({ name: project });
-      //   if (!projectDoc) projectDoc = await Project.create({ name: project });
-      //   projectId = projectDoc._id;
-      // }
+      // PROJETO
+      let projectId;
+      if (project) {
+        let projectDoc = await Project.findOne({ name: project });
+        if (!projectDoc) projectDoc = await Project.create({ name: project });
+        projectId = projectDoc._id as Types.ObjectId;
+      }
 
       // // PRODUTO
       // let productId;
@@ -141,7 +141,7 @@ export class TaskController {
         description,
         status,
         client: clientId,
-        // project: projectId,
+        project: projectId,
         // product: productId,
         evaluationStatus,
         assignedTo,

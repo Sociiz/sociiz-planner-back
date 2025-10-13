@@ -8,4 +8,8 @@ const ProductSchema = new Schema<IProduct>({
   name: { type: String, required: true },
 });
 
-export const Product = mongoose.model<IProduct>("Product", ProductSchema);
+export const Product = mongoose.model<IProduct>(
+  "Product",
+  ProductSchema,
+  "Produto"
+);

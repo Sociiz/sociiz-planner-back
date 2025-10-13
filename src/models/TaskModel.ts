@@ -13,9 +13,9 @@ export interface ITask extends Document {
   description?: string;
   status: "todo" | "inprogress" | "done" | "backlog" | string;
   evaluationStatus?: "pending" | "approved" | "rejected";
-  client?: Types.ObjectId;
-  project?: Types.ObjectId;
-  product?: Types.ObjectId;
+  client?: string[];
+  project?: string[];
+  product?: string[];
   createdBy: string;
   assignedTo?: string[];
   tags?: string[];
@@ -46,9 +46,9 @@ const TaskSchema = new Schema<ITask>(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
-    client: { type: Schema.Types.ObjectId, ref: "Cliente" },
-    project: { type: Schema.Types.ObjectId, ref: "Project" },
-    product: { type: Schema.Types.ObjectId, ref: "Product" },
+    client: { type: [String], default: [] },
+    project: { type: [String], default: [] },
+    product: { type: [String], default: [] },
     createdBy: { type: String, required: true },
     assignedTo: { type: [String], default: [] },
     subtasks: { type: [SubtaskSchema], default: [] },

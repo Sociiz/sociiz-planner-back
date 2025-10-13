@@ -45,26 +45,37 @@ export class TaskController {
 
       // Ao criar uma task quando informa cliente
       // verifica se cliente existe na coleção de Cliente, se não Cria
-      let clientId;
+      let clientNames: string[] = [];
       if (client) {
-        let clientDoc = await Client.findOne({ name: client });
-        if (!clientDoc) clientDoc = await Client.create({ name: client });
-        clientId = clientDoc._id as Types.ObjectId;
+        const clientArray = Array.isArray(client) ? client : [client];
+        for (const clientName of clientArray) {
+          let clientDoc = await Client.findOne({ name: clientName });
+          if (!clientDoc) clientDoc = await Client.create({ name: clientName });
+          clientNames.push(clientDoc.name);
+        }
       }
 
-      let projectId;
+      let projectNames: string[] = [];
       if (project) {
-        let projectDoc = await Project.findOne({ name: project });
-        if (!projectDoc) projectDoc = await Project.create({ name: project });
-        projectId = projectDoc._id as Types.ObjectId;
+        const projectArray = Array.isArray(project) ? project : [project];
+        for (const projectName of projectArray) {
+          let projectDoc = await Project.findOne({ name: projectName });
+          if (!projectDoc)
+            projectDoc = await Project.create({ name: projectName });
+          projectNames.push(projectDoc.name);
+        }
       }
 
       // PRODUTO
-      let productId;
+      let productNames: string[] = [];
       if (product) {
-        let productDoc = await Product.findOne({ name: product });
-        if (!productDoc) productDoc = await Product.create({ name: product });
-        productId = productDoc._id as Types.ObjectId;
+        const productArray = Array.isArray(product) ? product : [product];
+        for (const productName of productArray) {
+          let productDoc = await Product.findOne({ name: productName });
+          if (!productDoc)
+            productDoc = await Product.create({ name: productName });
+          productNames.push(productDoc.name);
+        }
       }
 
       // Cria task
@@ -72,9 +83,9 @@ export class TaskController {
         title,
         description,
         status,
-        client: clientId,
-        project: projectId,
-        product: productId,
+        client: clientNames.length > 0 ? clientNames : undefined,
+        project: projectNames.length > 0 ? projectNames : undefined,
+        product: productNames.length > 0 ? productNames : undefined,
         evaluationStatus,
         createdBy: userId,
         assignedTo: assignedTo || [],
@@ -113,36 +124,47 @@ export class TaskController {
           : [];
 
       // CLIENTE
-      let clientId;
+      let clientNames: string[] = [];
       if (client) {
-        let clientDoc = await Client.findOne({ name: client });
-        if (!clientDoc) clientDoc = await Client.create({ name: client });
-        clientId = clientDoc._id as Types.ObjectId;
+        const clientArray = Array.isArray(client) ? client : [client];
+        for (const clientName of clientArray) {
+          let clientDoc = await Client.findOne({ name: clientName });
+          if (!clientDoc) clientDoc = await Client.create({ name: clientName });
+          clientNames.push(clientDoc.name);
+        }
       }
 
       // PROJETO
-      let projectId;
+      let projectNames: string[] = [];
       if (project) {
-        let projectDoc = await Project.findOne({ name: project });
-        if (!projectDoc) projectDoc = await Project.create({ name: project });
-        projectId = projectDoc._id as Types.ObjectId;
+        const projectArray = Array.isArray(project) ? project : [project];
+        for (const projectName of projectArray) {
+          let projectDoc = await Project.findOne({ name: projectName });
+          if (!projectDoc)
+            projectDoc = await Project.create({ name: projectName });
+          projectNames.push(projectDoc.name);
+        }
       }
 
       // PRODUTO
-      let productId;
+      let productNames: string[] = [];
       if (product) {
-        let productDoc = await Product.findOne({ name: product });
-        if (!productDoc) productDoc = await Product.create({ name: product });
-        productId = productDoc._id as Types.ObjectId;
+        const productArray = Array.isArray(product) ? product : [product];
+        for (const productName of productArray) {
+          let productDoc = await Product.findOne({ name: productName });
+          if (!productDoc)
+            productDoc = await Product.create({ name: productName });
+          productNames.push(productDoc.name);
+        }
       }
 
       const task = await TaskService.updateTask(id, {
         title,
         description,
         status,
-        client: clientId,
-        project: projectId,
-        product: productId,
+        client: clientNames.length > 0 ? clientNames : undefined,
+        project: projectNames.length > 0 ? projectNames : undefined,
+        product: productNames.length > 0 ? productNames : undefined,
         evaluationStatus,
         assignedTo,
         tags,

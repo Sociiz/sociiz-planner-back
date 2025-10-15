@@ -35,6 +35,7 @@ export class TaskController {
         tags,
         subtasks,
         dueDate,
+        priority,
       } = request.body as any;
 
       // Filtra subtasks válidas
@@ -92,6 +93,7 @@ export class TaskController {
         tags: tags || [],
         subtasks: validSubtasks,
         dueDate: dueDate,
+        priority,
       });
 
       return reply.status(201).send(task);
@@ -116,6 +118,7 @@ export class TaskController {
         tags,
         subtasks,
         dueDate,
+        priority,
       } = request.body as any;
 
       const validSubtasks =
@@ -170,6 +173,7 @@ export class TaskController {
         tags,
         subtasks: validSubtasks,
         dueDate: dueDate,
+        priority,
       });
 
       if (!task)

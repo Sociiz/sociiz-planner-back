@@ -13,6 +13,7 @@ export interface ITask extends Document {
   description?: string;
   status: "todo" | "inprogress" | "done" | "backlog" | string;
   evaluationStatus?: "pending" | "approved" | "rejected";
+  priority?: "Baixa" | "Média" | "Alta" | "Urgente";
   client?: string[];
   project?: string[];
   product?: string[];
@@ -46,6 +47,7 @@ const TaskSchema = new Schema<ITask>(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
+    priority: { type: String, enum: ["Baixa", "Média", "Alta", "Urgente"] },
     client: { type: [String], default: [] },
     project: { type: [String], default: [] },
     product: { type: [String], default: [] },

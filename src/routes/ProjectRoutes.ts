@@ -1,10 +1,30 @@
 import { FastifyInstance } from "fastify";
 import { ProjectController } from "../controller/ProjectController";
 
-export async function projectRoutes(app: FastifyInstance) {
-  app.post("/projects", ProjectController.create);
-  app.get("/projects", ProjectController.getAll);
-  app.get("/projects/:id", ProjectController.getById);
-  app.put("/projects/:id", ProjectController.update);
-  app.delete("/projects/:id", ProjectController.delete);
+export async function projectRoutes(fastify: FastifyInstance) {
+  fastify.post(
+    "/projects",
+    { preHandler: [fastify.authenticate] },
+    ProjectController.create
+  );
+  fastify.get(
+    "/projects",
+    { preHandler: [fastify.authenticate] },
+    ProjectController.getAll
+  );
+  fastify.get(
+    "/projects/:id",
+    { preHandler: [fastify.authenticate] },
+    ProjectController.getById
+  );
+  fastify.put(
+    "/projects/:id",
+    { preHandler: [fastify.authenticate] },
+    ProjectController.update
+  );
+  fastify.delete(
+    "/projects/:id",
+    { preHandler: [fastify.authenticate] },
+    ProjectController.delete
+  );
 }

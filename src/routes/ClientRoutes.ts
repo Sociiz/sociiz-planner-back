@@ -1,10 +1,30 @@
-import { FastifyInstance } from "fastify";
+import fastify, { FastifyInstance } from "fastify";
 import { ClientController } from "../controller/ClientController";
 
-export async function clientRoutes(app: FastifyInstance) {
-  app.post("/clients", ClientController.create);
-  app.get("/clients", ClientController.getAll);
-  app.get("/clients/:id", ClientController.getById);
-  app.put("/clients/:id", ClientController.update);
-  app.delete("/clients/:id", ClientController.delete);
+export async function clientRoutes(fastify: FastifyInstance) {
+  fastify.post(
+    "/clients",
+    { preHandler: [fastify.authenticate] },
+    ClientController.create
+  );
+  fastify.get(
+    "/clients",
+    { preHandler: [fastify.authenticate] },
+    ClientController.getAll
+  );
+  fastify.get(
+    "/clients/:id",
+    { preHandler: [fastify.authenticate] },
+    ClientController.getById
+  );
+  fastify.put(
+    "/clients/:id",
+    { preHandler: [fastify.authenticate] },
+    ClientController.update
+  );
+  fastify.delete(
+    "/clients/:id",
+    { preHandler: [fastify.authenticate] },
+    ClientController.delete
+  );
 }

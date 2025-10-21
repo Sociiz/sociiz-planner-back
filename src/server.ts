@@ -11,15 +11,17 @@ import { clientRoutes } from "./routes/ClientRoutes";
 import { projectRoutes } from "./routes/ProjectRoutes";
 import { productRoutes } from "./routes/ProductRoutes";
 import { tagRoutes } from "./routes/TagRoutes";
+import { colaboradorRoutes } from "./routes/ColaboradorRoutes";
 
 dotenv.config();
 
 const fastify = Fastify({ logger: true });
 
 fastify.register(jwtPlugin);
+
 fastify.register(cors, {
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: ["https://sociiz-planner-react.vercel.app", "http://localhost:5173"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 });
 
@@ -35,6 +37,7 @@ fastify.register(clientRoutes, { prefix: "/" });
 fastify.register(projectRoutes, { prefix: "/" });
 fastify.register(productRoutes, { prefix: "/" });
 fastify.register(tagRoutes, { prefix: "/" });
+fastify.register(colaboradorRoutes, { prefix: "/" });
 
 const start = async () => {
   try {

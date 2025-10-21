@@ -1,10 +1,30 @@
 import { FastifyInstance } from "fastify";
 import { ProductController } from "../controller/ProductController";
 
-export async function productRoutes(app: FastifyInstance) {
-  app.post("/products", ProductController.create);
-  app.get("/products", ProductController.getAll);
-  app.get("/products/:id", ProductController.getById);
-  app.put("/products/:id", ProductController.update);
-  app.delete("/products/:id", ProductController.delete);
+export async function productRoutes(fastify: FastifyInstance) {
+  fastify.post(
+    "/products",
+    { preHandler: [fastify.authenticate] },
+    ProductController.create
+  );
+  fastify.get(
+    "/products",
+    { preHandler: [fastify.authenticate] },
+    ProductController.getAll
+  );
+  fastify.get(
+    "/products/:id",
+    { preHandler: [fastify.authenticate] },
+    ProductController.getById
+  );
+  fastify.put(
+    "/products/:id",
+    { preHandler: [fastify.authenticate] },
+    ProductController.update
+  );
+  fastify.delete(
+    "/products/:id",
+    { preHandler: [fastify.authenticate] },
+    ProductController.delete
+  );
 }

@@ -11,7 +11,7 @@ export interface ISubtask {
 export interface ITask extends Document {
   title: string;
   description?: string;
-  status: "todo" | "inprogress" | "done" | "backlog" | string;
+  status: string;
   evaluationStatus?: "pending" | "approved" | "rejected";
   priority?: "Baixa" | "Média" | "Alta" | "Urgente";
   client?: string[];

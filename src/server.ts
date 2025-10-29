@@ -20,7 +20,7 @@ const fastify = Fastify({ logger: true });
 fastify.register(jwtPlugin);
 
 fastify.register(cors, {
-  origin: ["https://sociiz-planner-react.vercel.app", "http://localhost:5173", "https://planner.orbiapp.com.br"],
+  origin: ["https://sociiz-planner-react.vercel.app", "http://localhost:5173", "https://planner.orbiapp.com.br","https://sociiz-planner-react-git-homologacao-sociiz-techs-projects.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 });

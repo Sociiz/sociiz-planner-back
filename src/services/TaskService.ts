@@ -2,23 +2,8 @@ import { Task, ITask, ISubtask } from "../models/TaskModel";
 import { Client } from "../models/ClientModel";
 import { Project } from "../models/ProjectModel";
 import { Product } from "../models/ProductModel";
-import fs from "fs";
-import path from "path";
 
 export class TaskService {
-  private static toBase64(filePath?: string | null) {
-    if (!filePath) return null;
-    try {
-      const fullPath = path.join(process.cwd(), filePath);
-      const buffer = fs.readFileSync(fullPath);
-      const ext = path.extname(filePath).slice(1);
-      return `data:image/${ext};base64,${buffer.toString("base64")}`;
-    } catch (err) {
-      console.error("Erro ao ler arquivo para Base64:", err);
-      return null;
-    }
-  }
-
   static async createTask(data: Partial<ITask>) {
     const task = new Task(data);
     return task.save();
@@ -29,21 +14,24 @@ export class TaskService {
     if (!task) return null;
 
     const clientImages = await Promise.all(
-      (task.client ?? []).map(async (name) =>
-        this.toBase64((await Client.findOne({ name }))?.imageUrl)
-      )
+      (task.client ?? []).map(async (name) => {
+        const client = await Client.findOne({ name });
+        return client?.imageBase64 ?? null;
+      })
     );
 
     const projectImages = await Promise.all(
-      (task.project ?? []).map(async (name) =>
-        this.toBase64((await Project.findOne({ name }))?.imageUrl)
-      )
+      (task.project ?? []).map(async (name) => {
+        const project = await Project.findOne({ name });
+        return project?.coverImage ?? null;
+      })
     );
 
     const productImages = await Promise.all(
-      (task.product ?? []).map(async (name) =>
-        this.toBase64((await Product.findOne({ name }))?.imageUrl)
-      )
+      (task.product ?? []).map(async (name) => {
+        const product = await Product.findOne({ name });
+        return product?.imageBase64 ?? null;
+      })
     );
 
     return {
@@ -69,21 +57,24 @@ export class TaskService {
     return Promise.all(
       tasks.map(async (task) => {
         const clientImages = await Promise.all(
-          (task.client ?? []).map(async (name) =>
-            this.toBase64((await Client.findOne({ name }))?.imageUrl)
-          )
+          (task.client ?? []).map(async (name) => {
+            const client = await Client.findOne({ name });
+            return client?.imageBase64 ?? null;
+          })
         );
 
         const projectImages = await Promise.all(
-          (task.project ?? []).map(async (name) =>
-            this.toBase64((await Project.findOne({ name }))?.imageUrl)
-          )
+          (task.project ?? []).map(async (name) => {
+            const project = await Project.findOne({ name });
+            return project?.coverImage ?? null;
+          })
         );
 
         const productImages = await Promise.all(
-          (task.product ?? []).map(async (name) =>
-            this.toBase64((await Product.findOne({ name }))?.imageUrl)
-          )
+          (task.product ?? []).map(async (name) => {
+            const product = await Product.findOne({ name });
+            return product?.imageBase64 ?? null;
+          })
         );
 
         return {

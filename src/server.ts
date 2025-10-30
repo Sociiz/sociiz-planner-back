@@ -17,6 +17,7 @@ import { tagRoutes } from "./routes/TagRoutes";
 import { colaboradorRoutes } from "./routes/ColaboradorRoutes";
 import { statusRoutes } from "./routes/StatusRoutes";
 import { uploadRoutes } from "./routes/UploadRoutes";
+import { noteRoutes } from "./routes/NoteRoutes";
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ fastify.register(productRoutes, { prefix: "/" });
 fastify.register(tagRoutes, { prefix: "/" });
 fastify.register(colaboradorRoutes, { prefix: "/" });
 fastify.register(statusRoutes, { prefix: "/" });
+fastify.register(noteRoutes, { prefix: "/" });
 
 // Rota raiz
 fastify.get("/", async () => ({ message: "Servidor rodando!" }));

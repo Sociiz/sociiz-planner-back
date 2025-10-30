@@ -4,7 +4,12 @@ import { ProductService } from "../services/ProductService";
 export class ProductController {
   static async create(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const product = await ProductService.createProduct(req.body as any);
+      const { name, imageUrl } = req.body as {
+        name: string;
+        imageUrl?: string;
+      };
+
+      const product = await ProductService.createProduct({ name, imageUrl });
       reply.code(201).send(product);
     } catch (error) {
       reply.code(500).send({ message: "Erro ao criar produto", error });
@@ -35,7 +40,15 @@ export class ProductController {
   static async update(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = req.params as { id: string };
-      const updated = await ProductService.updateProduct(id, req.body as any);
+      const { name, imageUrl } = req.body as {
+        name?: string;
+        imageUrl?: string;
+      };
+
+      const updated = await ProductService.updateProduct(id, {
+        name,
+        imageUrl,
+      });
       if (!updated)
         return reply.code(404).send({ message: "Produto não encontrado" });
       reply.send(updated);

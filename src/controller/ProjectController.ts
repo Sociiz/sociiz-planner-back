@@ -4,7 +4,16 @@ import { ProjectService } from "../services/ProjectService";
 export class ProjectController {
   static async create(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const project = await ProjectService.createProject(req.body as any);
+      const { name, description, imageUrl } = req.body as {
+        name: string;
+        description?: string;
+        imageUrl?: string;
+      };
+
+      const project = await ProjectService.createProject({
+        name,
+        imageUrl,
+      });
       reply.code(201).send(project);
     } catch (error) {
       reply.code(500).send({ message: "Erro ao criar projeto", error });
@@ -35,7 +44,16 @@ export class ProjectController {
   static async update(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = req.params as { id: string };
-      const updated = await ProjectService.updateProject(id, req.body as any);
+      const { name, description, imageUrl } = req.body as {
+        name?: string;
+        description?: string;
+        imageUrl?: string;
+      };
+
+      const updated = await ProjectService.updateProject(id, {
+        name,
+        imageUrl,
+      });
       if (!updated)
         return reply.code(404).send({ message: "Projeto não encontrado" });
       reply.send(updated);

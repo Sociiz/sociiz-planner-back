@@ -1,10 +1,11 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface INote extends Document {
   content: string;
   timestamp: number;
   createdAt: Date;
   updatedAt: Date;
+  createdBy: Types.ObjectId;
 }
 
 const noteSchema = new Schema<INote>(
@@ -19,6 +20,7 @@ const noteSchema = new Schema<INote>(
       required: true,
       default: () => Date.now(),
     },
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   {
     timestamps: true,

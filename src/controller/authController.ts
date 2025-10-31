@@ -3,6 +3,7 @@ import { UserService } from "../services/UserServices";
 
 interface TokenPayload {
   id: string;
+  isAdmin: boolean;
 }
 
 interface RefreshTokenBody {
@@ -11,24 +12,38 @@ interface RefreshTokenBody {
 
 export class AuthController {
   static async register(request: FastifyRequest, reply: FastifyReply) {
-    const { email, password, username } = request.body as any;
+    const { email, password, username, isAdmin } = request.body as any;
 
     try {
-      const user = await UserService.createUser({ email, password, username });
+      // Cria usuário com o campo isAdmin
+      const user = await UserService.createUser({
+        email,
+        password,
+        username,
+        isAdmin,
+      });
 
+      // Cria tokens já contendo isAdmin
       const accessToken = (request.server as any).jwt.sign(
-        { id: user._id },
+        { id: user._id, isAdmin: user.isAdmin },
         { expiresIn: "1h" }
       );
 
       const refreshToken = (request.server as any).jwt.sign(
-        { id: user._id, type: "refresh" },
+        { id: user._id, isAdmin: user.isAdmin, type: "refresh" },
         { expiresIn: "7d" }
       );
 
       return reply.send({
+        success: true,
         token: accessToken,
         refreshToken: refreshToken,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
       });
     } catch (err: any) {
       return reply.status(400).send({ message: err.message });
@@ -47,20 +62,28 @@ export class AuthController {
     );
     if (!valid) return reply.status(400).send({ message: "Senha inválida" });
 
-    // Token de acesso (curta duração)
+    // Aqui quando to mandando o token to validando se é admin ou nao
     const accessToken = (request.server as any).jwt.sign(
-      { id: user._id },
+      { id: user._id, isAdmin: user.isAdmin },
       { expiresIn: "1h" }
     );
-
+    // no refresh tbm vou precisar, se não como vou saber ué
     const refreshToken = (request.server as any).jwt.sign(
-      { id: user._id, type: "refresh" },
+      { id: user._id, isAdmin: user.isAdmin, type: "refresh" },
       { expiresIn: "7d" }
     );
 
+    // no retorno do endpoint to mandando isAdmin pra realmente ver se o cara é admin ou n
     return reply.send({
+      success: true,
       token: accessToken,
       refreshToken: refreshToken,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
     });
   }
 
@@ -102,19 +125,28 @@ export class AuthController {
         return reply.status(401).send({ message: "Usuário não encontrado" });
       }
 
+      // novos tokens e refreshtoken tambem preciso verificar se admin ou n
       const newAccessToken = (request.server as any).jwt.sign(
-        { id: user._id },
+        { id: user._id, isAdmin: user.isAdmin },
         { expiresIn: "1h" }
       );
 
       const newRefreshToken = (request.server as any).jwt.sign(
-        { id: user._id, type: "refresh" },
+        { id: user._id, isAdmin: user.isAdmin, type: "refresh" },
         { expiresIn: "7d" }
       );
 
+      // tbm devolvo o isAdmin
       return reply.send({
+        success: true,
         token: newAccessToken,
         refreshToken: newRefreshToken,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
       });
     } catch (error) {
       console.error("Erro ao renovar token:", error);

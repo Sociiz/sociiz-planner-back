@@ -23,13 +23,15 @@ export class NoteController {
     try {
       const { content } = request.body;
 
+      const user = request.user as { id: string; isAdmin: boolean };
+
       if (!content || content.trim() === "") {
         return reply.status(400).send({
-          error: "Content is required",
+          error: "Conteúdo vazio, conteúdo é necessário",
         });
       }
 
-      const note = await noteService.createNote(content);
+      const note = await noteService.createNote(content, user.id);
 
       return reply.status(201).send({
         success: true,
@@ -38,14 +40,18 @@ export class NoteController {
     } catch (error) {
       request.log.error(error);
       return reply.status(500).send({
-        error: "Failed to create note",
+        error: "Falha ao criar nova nota",
       });
     }
   }
 
   async getAll(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const notes = await noteService.getAllNotes();
+      const user = request.user as { id: string; isAdmin: boolean };
+
+      const notes = user.isAdmin
+        ? await noteService.getAllNotes()
+        : await noteService.getNotesByUser(user.id);
 
       return reply.status(200).send({
         success: true,
@@ -55,7 +61,7 @@ export class NoteController {
     } catch (error) {
       request.log.error(error);
       return reply.status(500).send({
-        error: "Failed to fetch notes",
+        error: "Falha ao carregar as notas",
       });
     }
   }
@@ -70,7 +76,7 @@ export class NoteController {
 
       if (!note) {
         return reply.status(404).send({
-          error: "Note not found",
+          error: "Nota não encontrada",
         });
       }
 
@@ -81,7 +87,7 @@ export class NoteController {
     } catch (error) {
       request.log.error(error);
       return reply.status(500).send({
-        error: "Failed to fetch note",
+        error: "Falha ao carregar as nota",
       });
     }
   }
@@ -96,7 +102,7 @@ export class NoteController {
 
       if (!content || content.trim() === "") {
         return reply.status(400).send({
-          error: "Content is required",
+          error: "Conteúdo vazio, é necessário conteúdo",
         });
       }
 
@@ -104,7 +110,7 @@ export class NoteController {
 
       if (!note) {
         return reply.status(404).send({
-          error: "Note not found",
+          error: "Nota não encontrada",
         });
       }
 
@@ -115,7 +121,7 @@ export class NoteController {
     } catch (error) {
       request.log.error(error);
       return reply.status(500).send({
-        error: "Failed to update note",
+        error: "Falha ao atualizar nota",
       });
     }
   }
@@ -130,29 +136,35 @@ export class NoteController {
 
       if (!deleted) {
         return reply.status(404).send({
-          error: "Note not found",
+          error: "Nota não encontrada",
         });
       }
 
       return reply.status(200).send({
         success: true,
-        message: "Note deleted successfully",
+        message: "Nota deletada com sucesso",
       });
     } catch (error) {
       request.log.error(error);
       return reply.status(500).send({
-        error: "Failed to delete note",
+        error: "Falha ao deletar nota",
       });
     }
   }
 
   async deleteAll(request: FastifyRequest, reply: FastifyReply) {
     try {
+      const user = request.user as { isAdmin: boolean };
+      if (!user.isAdmin) {
+        return reply.status(403).send({
+          error: "Apenas admin são autorizados deletar todas as notas",
+        });
+      }
       const count = await noteService.deleteAllNotes();
 
       return reply.status(200).send({
         success: true,
-        message: `${count} notes deleted successfully`,
+        message: `${count} notas deletadas com sucesso`,
         count,
       });
     } catch (error) {

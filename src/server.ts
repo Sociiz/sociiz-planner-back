@@ -18,6 +18,7 @@ import { colaboradorRoutes } from "./routes/ColaboradorRoutes";
 import { statusRoutes } from "./routes/StatusRoutes";
 import { uploadRoutes } from "./routes/UploadRoutes";
 import { noteRoutes } from "./routes/NoteRoutes";
+import { commentRoutes } from "./routes/CommentRoutes";
 
 dotenv.config();
 
@@ -58,14 +59,14 @@ fastify.register(tagRoutes, { prefix: "/" });
 fastify.register(colaboradorRoutes, { prefix: "/" });
 fastify.register(statusRoutes, { prefix: "/" });
 fastify.register(noteRoutes, { prefix: "/" });
+fastify.register(commentRoutes, { prefix: "/" });
 
-// Rota raiz
 fastify.get("/", async () => ({ message: "Servidor rodando!" }));
 
 const start = async () => {
   try {
     await connectDB();
-    await fastify.listen({ port: 5000 });
+    await fastify.listen({ port: 3000 });
     console.log("🚀 Server rodando na porta 3000");
   } catch (err) {
     fastify.log.error(err);

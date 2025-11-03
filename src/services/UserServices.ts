@@ -7,6 +7,7 @@ export class UserService {
     password: string;
     username: string;
     isAdmin: string;
+    isColaborador: string;
   }) {
     const exists = await User.findOne({ email: data.email });
     if (exists) throw new Error("Email já existe");

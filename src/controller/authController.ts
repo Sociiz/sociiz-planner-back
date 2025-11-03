@@ -4,6 +4,7 @@ import { UserService } from "../services/UserServices";
 interface TokenPayload {
   id: string;
   isAdmin: boolean;
+  isColaborador: boolean; // Agora consigo identificar quando é um colaborador ou não pra filtrar e conseguir mostrar tudo dele na tela
 }
 
 interface RefreshTokenBody {
@@ -12,7 +13,8 @@ interface RefreshTokenBody {
 
 export class AuthController {
   static async register(request: FastifyRequest, reply: FastifyReply) {
-    const { email, password, username, isAdmin } = request.body as any;
+    const { email, password, username, isAdmin, isColaborador } =
+      request.body as any;
 
     try {
       // Cria usuário com o campo isAdmin
@@ -21,6 +23,7 @@ export class AuthController {
         password,
         username,
         isAdmin,
+        isColaborador,
       });
 
       // Cria tokens já contendo isAdmin
@@ -43,6 +46,7 @@ export class AuthController {
           username: user.username,
           email: user.email,
           isAdmin: user.isAdmin,
+          isColaborador: user.isColaborador,
         },
       });
     } catch (err: any) {
@@ -83,6 +87,7 @@ export class AuthController {
         username: user.username,
         email: user.email,
         isAdmin: user.isAdmin,
+        isColaborador: user.isColaborador,
       },
     });
   }
@@ -146,6 +151,7 @@ export class AuthController {
           username: user.username,
           email: user.email,
           isAdmin: user.isAdmin,
+          isColaborador: user.isColaborador,
         },
       });
     } catch (error) {

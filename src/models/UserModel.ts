@@ -6,6 +6,7 @@ export interface IUser {
   email: string;
   password: string;
   isAdmin: boolean;
+  isColaborador: boolean;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -13,6 +14,7 @@ const UserSchema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false }, // flag nova pra eu saber quando é admin ou não
+  isColaborador: { type: Boolean, default: false }, // flag nova pra eu saber quando é colaborador ou não
 });
 
 // Hash da senha

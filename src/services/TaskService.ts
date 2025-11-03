@@ -16,7 +16,7 @@ export class TaskService {
     const clientImages = await Promise.all(
       (task.client ?? []).map(async (name) => {
         const client = await Client.findOne({ name });
-        return client?.imageBase64 ?? null;
+        return client?.coverImage ?? null;
       })
     );
 
@@ -30,7 +30,7 @@ export class TaskService {
     const productImages = await Promise.all(
       (task.product ?? []).map(async (name) => {
         const product = await Product.findOne({ name });
-        return product?.imageBase64 ?? null;
+        return product?.coverImage ?? null;
       })
     );
 
@@ -59,7 +59,7 @@ export class TaskService {
         const clientImages = await Promise.all(
           (task.client ?? []).map(async (name) => {
             const client = await Client.findOne({ name });
-            return client?.imageBase64 ?? null;
+            return client?.coverImage ?? null;
           })
         );
 
@@ -73,7 +73,7 @@ export class TaskService {
         const productImages = await Promise.all(
           (task.product ?? []).map(async (name) => {
             const product = await Product.findOne({ name });
-            return product?.imageBase64 ?? null;
+            return product?.coverImage ?? null;
           })
         );
 

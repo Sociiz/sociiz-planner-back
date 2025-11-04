@@ -1,15 +1,15 @@
-import mongoose, { Schema, Document } from "mongoose";
+// import mongoose, { Schema, Document } from "mongoose";
 
-export interface IColaborador extends Document {
-  name: string;
-}
+// export interface IColaborador extends Document {
+//   name: string;
+// }
 
-const ColaboradorSchema = new Schema<IColaborador>({
-  name: { type: String, required: true },
-});
+// const ColaboradorSchema = new Schema<IColaborador>({
+//   name: { type: String, required: true },
+// });
 
-export const Colaborador = mongoose.model<IColaborador>(
-  "Colaborador",
-  ColaboradorSchema,
-  "Colaboradores"
-);
+// export const Colaborador = mongoose.model<IColaborador>(
+//   "Colaborador",
+//   ColaboradorSchema,
+//   "Colaboradores"
+// );

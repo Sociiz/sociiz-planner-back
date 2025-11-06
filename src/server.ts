@@ -31,6 +31,7 @@ fastify.register(cors, {
     "http://localhost:5173",
     "https://planner.orbiapp.com.br",
     "https://sociiz-planner-react-git-homologacao-sociiz-techs-projects.vercel.app",
+    "https://planner.sociiz.com.br",
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
